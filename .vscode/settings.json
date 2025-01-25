@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "ctype.h": "c",
+        "hesap.h": "c",
+        "string.h": "c"
+    }
+}

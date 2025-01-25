@@ -1,6 +1,6 @@
 
-exe: build/main.o build/hello.o build/hakan.o
-	gcc build/main.o build/hello.o build/hakan.o -o build/exe -lpthread
+exe: build/main.o build/hesap.o
+	gcc build/main.o build/hesap.o -o build/exe -lpthread
 
 build/%.o: src/%.c
 	mkdir -p build
