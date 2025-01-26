@@ -1,23 +1,38 @@
+//while (isspace(karar = getchar())); 
+
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 #include "../include/hesap.h"
 
 int main(){
 
 
-
-int sayi1, sayi2;
+int kayitsayisi = 10;
+int sayi1, sayi2,i;
 char karar;
 
-scanf("%d", &sayi1);
- // 'char' tipi bir değişken
-
-while (isspace(karar = getchar())); // Burada 'karar' karakteri atanıyor
-
-scanf("%d", &sayi2);
 
 
-//switchde olur 
-neyapcam(karar, sayi1, sayi2);
+printf("işlem yapmak istediğiniz sayıları ve işlemi giriniz : \n");
+
+
+while(getchar() != '\n'){
+    hesap *ilk = (hesap *)malloc(sizeof(hesap));
+
+    scanf("%d", &sayi1);
+
+    while (isspace(karar = getchar())); 
+    
+    scanf("%d", &sayi2);
+
+    kayit_olustur(ilk,sayi1, sayi2, karar);
+}
+
+
+
+return 0;
 
 
 }

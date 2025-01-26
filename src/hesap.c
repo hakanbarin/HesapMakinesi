@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include "hesap.h"
 
 
 int topla(int a, int b){
@@ -48,7 +49,46 @@ else if (karar == '%')
     if(sayi2 == 0)
         printf("0 a bölünmez la\n");
     else
-        printf("%d\n", islem[3](sayi1, sayi2));
+        printf("%d\n", islem[4](sayi1, sayi2));
 else
-    printf("emin misin? \n");
+    printf("selametle usta \n");
 }
+
+
+
+hesap *kayit_olustur(hesap* agac, int gelen1, int gelen2, char gelenkarar){
+    hesap *iter = agac;
+    while(iter != NULL){
+        if((gelen1 == iter->sayi1 && gelen2 == iter->sayi2) || (gelen1 == iter->sayi2 && gelen2 == iter->sayi1)) {
+            printf("bu islemi daha önce yaptin la sonuc %d\n", iter->sonuc);
+            return agac;
+        }
+        iter = iter->next;
+    }
+    if(agac == NULL){
+        hesap * yeni = (hesap *)malloc(sizeof(hesap));
+        yeni->sayi1 = gelen1;
+        yeni->sayi2 = gelen2;
+        yeni->karar = gelenkarar;
+        yeni->sonuc = neyapcam(gelenkarar, gelen1, gelen2);
+        printf("sonuc %d\n", yeni->sonuc);
+        yeni->next = NULL;
+        return yeni;
+    }
+        
+    else if(agac->next == NULL){
+        agac->next = kayit_olustur(agac->next, gelen1, gelen2, gelenkarar);
+        return agac;
+    }
+    else{
+        hesap * iter = agac;
+        while(iter->next != NULL){
+            iter = iter->next;
+        }
+        iter->next = kayit_olustur(iter->next, gelen1, gelen2, gelenkarar);
+        return agac;
+    }
+    
+}
+
+    
