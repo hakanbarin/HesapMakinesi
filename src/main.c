@@ -18,21 +18,20 @@ char karar;
 printf("işlem yapmak istediğiniz sayıları ve işlemi giriniz : \n");
 
 
-while(getchar() != '\n'){
-    hesap *ilk = (hesap *)malloc(sizeof(hesap));
 
-    scanf("%d", &sayi1);
+hesap *ilk = (hesap *)malloc(sizeof(hesap));
 
-    while (isspace(karar = getchar())); 
-    
-    scanf("%d", &sayi2);
+scanf("%d", &sayi1);
 
-    kayit_olustur(ilk,sayi1, sayi2, karar);
+while (isspace(karar = getchar())); 
+
+scanf("%d", &sayi2);
+
+kayit_olustur(ilk,sayi1, sayi2, karar);
+
+
+/*while(getchar() != '\n'){
 }
-
-
-
-return 0;
-
+*/
 
 }

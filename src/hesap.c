@@ -29,33 +29,63 @@ int mod(int a, int b){
 }
 
 int neyapcam (char karar, int sayi1, int sayi2){
-int (*islem[5])(int, int) = {topla, cikar, carpma, bolme, mod};
-if (karar == '+')
-    printf("%d\n", islem[0](sayi1, sayi2));
+    
+    int a;
+    int (*islem[5])(int, int) = {topla, cikar, carpma, bolme, mod};
 
-else if (karar == '-')
-    printf("%d\n", islem[1](sayi1, sayi2));
+        if (karar == '+'){
+            a = islem[0](sayi1, sayi2);
+            printf("%d\n", a);
+            return a;
+        }
+        else if (karar == '-'){
+            a = islem[1](sayi1, sayi2);
+            printf("%d\n", a);
+            return a;
+        }
 
-else if (karar == '*')
-    printf("%d\n", islem[2](sayi1, sayi2));
+        else if (karar == '*'){
+            a = islem[2](sayi1, sayi2);
+            printf("%d\n", a);
+            return a;
+        }
+        else if (karar == '/')
+            if(sayi2 == 0)
+                printf("0 a bölünmez la\n");
+            else{
+            a = islem[3](sayi1, sayi2);
+            printf("%d\n", a);
+            return a;
+        }
 
-else if (karar == '/')
-    if(sayi2 == 0)
-        printf("0 a bölünmez la\n");
-    else
-        printf("%d\n", islem[3](sayi1, sayi2));
-
-else if (karar == '%')
-    if(sayi2 == 0)
-        printf("0 a bölünmez la\n");
-    else
-        printf("%d\n", islem[4](sayi1, sayi2));
-else
-    printf("selametle usta \n");
+        else if (karar == '%')
+            if(sayi2 == 0)
+                printf("0 a bölünmez la\n");
+            else
+            {
+            a = islem[4](sayi1, sayi2);
+            printf("%d\n", a);
+            return a;
+        }
+        else
+            printf("selametle usta \n");
 }
 
 
+hesap *kayit_olustur(hesap* agac, int gelen1, int gelen2, char gelenkarar) {
 
+        hesap *yeni = (hesap *)malloc(sizeof(hesap));
+        yeni->next = NULL;
+        yeni->sayi1 = gelen1;
+        yeni->sayi2 = gelen2;
+        yeni->karar = gelenkarar;
+        yeni->sonuc = neyapcam(gelenkarar, gelen1, gelen2);
+        printf("%d\n", yeni->sonuc);
+        return yeni;
+}
+
+
+/*
 hesap *kayit_olustur(hesap* agac, int gelen1, int gelen2, char gelenkarar){
     hesap *iter = agac;
     while(iter != NULL){
@@ -65,6 +95,7 @@ hesap *kayit_olustur(hesap* agac, int gelen1, int gelen2, char gelenkarar){
         }
         iter = iter->next;
     }
+
     if(agac == NULL){
         hesap * yeni = (hesap *)malloc(sizeof(hesap));
         yeni->sayi1 = gelen1;
@@ -92,3 +123,4 @@ hesap *kayit_olustur(hesap* agac, int gelen1, int gelen2, char gelenkarar){
 }
 
     
+*/
