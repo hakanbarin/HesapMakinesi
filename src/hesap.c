@@ -77,7 +77,7 @@ int neyapcam(char karar, int sayi1, int sayi2)
             return a;
         }
     else
-        printf("selametle usta \n");
+        printf("yapacaginiz islemi yanlis girdiniz \n");
 }
 
 // KARAR VERİLİP İŞLEM YAPILAN KISIM
@@ -86,7 +86,7 @@ int neyapcam(char karar, int sayi1, int sayi2)
 void get_inputs()
 {
     hesap *ilk = (hesap *)malloc(sizeof(hesap));
-    int number1, number2,calculation_number;
+    int number1, number2, calculation_number;
     char decision;
 
     printf("kac islem \n");
@@ -94,17 +94,26 @@ void get_inputs()
 
     while (calculation_number != 0)
     {
-        printf("%d \n", calculation_number);
-        scanf("%d", &number1);
 
-        while (isspace(decision = getchar()))
-            ;
+        if (scanf("%d", &number1) != 1)
+        {
+            printf("1. sayiyi yanlis girdin\n");
 
-        scanf("%d", &number2);
+            continue; // Döngünün başına dön
+        }
+
+        while(isspace(decision = getchar()));
+
+        if (scanf("%d", &number2) != 1)
+        {
+            printf("2. sayiyi yanlis girdin\n");
+            continue;
+        }
         if (kayit_olustur(ilk, number1, number2, decision) != NULL)
 
             calculation_number--;
     }
+    free(ilk);
 }
 
 // İNPUT ALIP FONKSİYONLARA GÖNDEREN KISIM
@@ -113,11 +122,11 @@ void get_inputs()
 
 hesap *kayit_olustur(hesap *agac, int gelen1, int gelen2, char gelenkarar)
 {
-    printf("%p\n", agac);
+
     hesap *iter = agac;
     while (iter != NULL)
     {
-        if ((gelen1 == iter->sayi1 && gelen2 == iter->sayi2) || (gelen1 == iter->sayi2 && gelen2 == iter->sayi1))
+        if (((gelen1 == iter->sayi1 && gelen2 == iter->sayi2) || (gelen1 == iter->sayi2 && gelen2 == iter->sayi1)) && (gelenkarar == iter->karar))
         {
             printf("bu islemi daha önce yaptin: SONUC %d\n", iter->sonuc);
             return NULL;
