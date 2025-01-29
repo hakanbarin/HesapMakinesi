@@ -4,86 +4,126 @@
 #include <ctype.h>
 #include "hesap.h"
 
+// İNPUT ALIP FONKSİYONLARA GÖNDEREN KISIM
+void get_inputs(int number1, int number2, char decision){
+    
+    hesap *ilk = (hesap *)malloc(sizeof(hesap));
 
-int topla(int a, int b){
+    scanf("%d", &number1);
+
+    while (isspace(decision = getchar())); 
+
+    scanf("%d", &number2);
+
+}
+
+// İNPUT ALIP FONKSİYONLARA GÖNDEREN KISIM
+
+
+
+
+
+// HESAPLAMA KISMI
+int topla(int a, int b)
+{
     return a + b;
 }
 
-
-int cikar(int a, int b){
+int cikar(int a, int b)
+{
     return a - b;
 }
 
-
-int carpma(int a, int b){
+int carpma(int a, int b)
+{
     return a * b;
 }
 
-
-int bolme(int a, int b){
+int bolme(int a, int b)
+{
     return a / b;
 }
 
-int mod(int a, int b){
+int mod(int a, int b)
+{
     return a % b;
 }
+// HESAPLAMA KISMI
 
-int neyapcam (char karar, int sayi1, int sayi2){
-    
+
+
+
+
+// KARAR VERİLİP İŞLEM YAPILAN KISIM
+int neyapcam(char karar, int sayi1, int sayi2)
+{
+
     int a;
     int (*islem[5])(int, int) = {topla, cikar, carpma, bolme, mod};
 
-        if (karar == '+'){
-            a = islem[0](sayi1, sayi2);
-            printf("%d\n", a);
-            return a;
-        }
-        else if (karar == '-'){
-            a = islem[1](sayi1, sayi2);
-            printf("%d\n", a);
-            return a;
-        }
+    if (karar == '+')
+    {
+        a = islem[0](sayi1, sayi2);
+        printf("%d\n", a);
+        return a;
+    }
+    else if (karar == '-')
+    {
+        a = islem[1](sayi1, sayi2);
+        printf("%d\n", a);
+        return a;
+    }
 
-        else if (karar == '*'){
-            a = islem[2](sayi1, sayi2);
-            printf("%d\n", a);
-            return a;
-        }
-        else if (karar == '/')
-            if(sayi2 == 0)
-                printf("0 a bölünmez la\n");
-            else{
+    else if (karar == '*')
+    {
+        a = islem[2](sayi1, sayi2);
+        printf("%d\n", a);
+        return a;
+    }
+    else if (karar == '/')
+        if (sayi2 == 0)
+            printf("0 a bölünmez la\n");
+        else
+        {
             a = islem[3](sayi1, sayi2);
             printf("%d\n", a);
             return a;
         }
 
-        else if (karar == '%')
-            if(sayi2 == 0)
-                printf("0 a bölünmez la\n");
-            else
-            {
+    else if (karar == '%')
+        if (sayi2 == 0)
+            printf("0 a bölünmez la\n");
+        else
+        {
             a = islem[4](sayi1, sayi2);
             printf("%d\n", a);
             return a;
         }
-        else
-            printf("selametle usta \n");
+    else
+        printf("selametle usta \n");
 }
 
+// KARAR VERİLİP İŞLEM YAPILAN KISIM
 
-hesap *kayit_olustur(hesap* agac, int gelen1, int gelen2, char gelenkarar) {
 
-        hesap *yeni = (hesap *)malloc(sizeof(hesap));
-        yeni->next = NULL;
-        yeni->sayi1 = gelen1;
-        yeni->sayi2 = gelen2;
-        yeni->karar = gelenkarar;
-        yeni->sonuc = neyapcam(gelenkarar, gelen1, gelen2);
-        printf("%d\n", yeni->sonuc);
-        return yeni;
+
+
+
+
+// CACHE KISMI
+
+hesap *kayit_olustur(hesap *agac, int gelen1, int gelen2, char gelenkarar)
+{
+
+    hesap *yeni = (hesap *)malloc(sizeof(hesap));
+    yeni->next = NULL;
+    yeni->sayi1 = gelen1;
+    yeni->sayi2 = gelen2;
+    yeni->karar = gelenkarar;
+    yeni->sonuc = neyapcam(gelenkarar, gelen1, gelen2);
+    printf("%d\n", yeni->sonuc);
+    return yeni;
 }
-
 
 /*
 hesap *kayit_olustur(hesap* agac, int gelen1, int gelen2, char gelenkarar){
@@ -106,7 +146,7 @@ hesap *kayit_olustur(hesap* agac, int gelen1, int gelen2, char gelenkarar){
         yeni->next = NULL;
         return yeni;
     }
-        
+
     else if(agac->next == NULL){
         agac->next = kayit_olustur(agac->next, gelen1, gelen2, gelenkarar);
         return agac;
@@ -119,8 +159,10 @@ hesap *kayit_olustur(hesap* agac, int gelen1, int gelen2, char gelenkarar){
         iter->next = kayit_olustur(iter->next, gelen1, gelen2, gelenkarar);
         return agac;
     }
-    
+
 }
 
-    
+
 */
+
+// CACHE KISMI

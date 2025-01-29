@@ -1,6 +1,8 @@
 #ifndef HESAP_H
 #define HESAP_H
 
+
+
 typedef struct hesap {
     int sayi1;
     int sayi2;
@@ -10,11 +12,12 @@ typedef struct hesap {
 } hesap;
 
 
-int topla(int a, int b);
-int cikar(int a, int b);
-int carpma(int a, int b);
-int bolme(int a, int b);
-int mod(int a, int b);
+int get_inputs(int, int, char);
+int topla(int, int);
+int cikar(int, int );
+int carpma(int, int);
+int bolme(int, int);
+int mod(int, int);
 int neyapcam (char karar, int sayi1, int sayi2);
 hesap *kayit_olustur(hesap*, int, int, char);
 
