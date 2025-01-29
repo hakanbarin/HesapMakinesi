@@ -12,7 +12,7 @@ typedef struct hesap {
 } hesap;
 
 
-int get_inputs(int, int, char);
+void get_inputs(int);
 int topla(int, int);
 int cikar(int, int );
 int carpma(int, int);
