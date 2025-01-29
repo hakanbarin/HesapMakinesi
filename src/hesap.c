@@ -83,11 +83,10 @@ int neyapcam(char karar, int sayi1, int sayi2)
 // KARAR VERİLİP İŞLEM YAPILAN KISIM
 
 // İNPUT ALIP FONKSİYONLARA GÖNDEREN KISIM
-void get_inputs(int calculation_number)
+void get_inputs()
 {
-    // hesap *ilk = (hesap *)malloc(sizeof(hesap));
     hesap *ilk = (hesap *)malloc(sizeof(hesap));
-    int number1, number2;
+    int number1, number2,calculation_number;
     char decision;
 
     printf("kac islem \n");
