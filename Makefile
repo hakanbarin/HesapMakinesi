@@ -1,5 +1,5 @@
 
-exe: build/main.o build/hesap.o
+exe: build/main.o build/hesap.o build/calculation.o
 	gcc build/main.o build/hesap.o -o build/exe -lpthread
 
 build/%.o: src/%.c

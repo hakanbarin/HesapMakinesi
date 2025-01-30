@@ -4,122 +4,85 @@
 #include <ctype.h>
 #include "hesap.h"
 
-// HESAPLAMA KISMI
-int topla(int a, int b)
+hesap *hesap_new(int sayi1, int sayi2, char karar)
 {
-    return a + b;
+    hesap *new = (hesap *)malloc(sizeof(hesap));
+    new->sayi1 = sayi1;
+    new->sayi2 = sayi2;
+    new->karar = karar;
+    new->sonuc = neyapcam(karar, sayi1, sayi2);
+    new->next = NULL;
+    return new;
 }
 
-int cikar(int a, int b)
-{
-    return a - b;
-}
-
-int carpma(int a, int b)
-{
-    return a * b;
-}
-
-int bolme(int a, int b)
-{
-    return a / b;
-}
-
-int mod(int a, int b)
-{
-    return a % b;
-}
-// HESAPLAMA KISMI
-
-// KARAR VERİLİP İŞLEM YAPILAN KISIM
-int neyapcam(char karar, int sayi1, int sayi2)
+hesap *hesap_append(hesap *start, int number1, int number2, char decision)
 {
 
-    int a;
-    int (*islem[5])(int, int) = {topla, cikar, carpma, bolme, mod};
-
-    if (karar == '+')
+    hesap *iter = start;
+    while (iter->next != NULL)
     {
-        a = islem[0](sayi1, sayi2);
-        printf("%d\n", a);
-        return a;
+        iter = iter->next;
     }
-    else if (karar == '-')
-    {
-        a = islem[1](sayi1, sayi2);
-        printf("%d\n", a);
-        return a;
-    }
+    iter->next = hesap_new(number1, number2, decision);
+    return start;
+}
 
-    else if (karar == '*')
+hesap *hesap_delete(hesap *start)
+{
+    hesap *iter = start; // iter 1 gidecek start temizlenecek sonra itere eşit olacak
+    while (iter->next != NULL)
     {
-        a = islem[2](sayi1, sayi2);
-        printf("%d\n", a);
-        return a;
+        iter = iter->next;
+        free(start);
+        start = iter;
     }
-    else if (karar == '/')
-        if (sayi2 == 0)
-            printf("0 a bölünmez la\n");
-        else
+    //https://stackoverflow.com/questions/58757213/if-two-pointers-point-to-the-same-memory-address-do-you-only-need-to-use-freep
+    free(iter);
+    return NULL;
+}
+
+hesap *hesap_find(hesap *start, int number1, int number2, char decision)
+{
+
+    hesap *iter = start;
+    while (iter->next != NULL)
+    {
+        if (((number1 == iter->sayi1 && number2 == iter->sayi2) || (number1 == iter->sayi2 && number2 == iter->sayi1)) && (decision == iter->karar))
         {
-            a = islem[3](sayi1, sayi2);
-            printf("%d\n", a);
-            return a;
+            printf("bu islemi daha önce yaptin: SONUC %d\n", iter->sonuc);
+            return iter;
         }
+        iter = iter->next;
+    }
+    return NULL;
+}
 
-    else if (karar == '%')
-        if (sayi2 == 0)
-            printf("0 a bölünmez la\n");
-        else
-        {
-            a = islem[4](sayi1, sayi2);
-            printf("%d\n", a);
-            return a;
-        }
+hesap *kayit(hesap *coming_node, int number1, int number2, char decision)
+{   
+    hesap *find = hesap_find(coming_node, number1, number2, decision);
+    if(find != NULL){
+        return find;
+    }
+
+    if (coming_node == NULL){
+
+        coming_node = hesap_new(number1, number2, decision); // coming_node'a adres atandı.
+        return coming_node;
+    }
+
+    else if (coming_node->next == NULL){
+
+        coming_node->next = hesap_new(number1, number2, decision);
+        return coming_node;
+    }
     else
-        printf("yapacaginiz islemi yanlis girdiniz \n");
+
+        hesap_append(coming_node, number1, number2, decision);
+        return coming_node; 
 }
-
-// KARAR VERİLİP İŞLEM YAPILAN KISIM
-
-// İNPUT ALIP FONKSİYONLARA GÖNDEREN KISIM
-void get_inputs()
-{
-    hesap *ilk = (hesap *)malloc(sizeof(hesap));
-    int number1, number2, calculation_number;
-    char decision;
-
-    printf("kac islem \n");
-    scanf("%d", &calculation_number);
-
-    while (calculation_number != 0)
-    {
-
-        if (scanf("%d", &number1) != 1)
-        {
-            printf("1. sayiyi yanlis girdin\n");
-
-            continue; // Döngünün başına dön
-        }
-
-        while(isspace(decision = getchar()));
-
-        if (scanf("%d", &number2) != 1)
-        {
-            printf("2. sayiyi yanlis girdin\n");
-            continue;
-        }
-        if (kayit_olustur(ilk, number1, number2, decision) != NULL)
-
-            calculation_number--;
-    }
-    free(ilk);
-}
-
-// İNPUT ALIP FONKSİYONLARA GÖNDEREN KISIM
 
 // CACHE KISMI
-
+/*
 hesap *kayit_olustur(hesap *agac, int gelen1, int gelen2, char gelenkarar)
 {
 
@@ -162,6 +125,9 @@ hesap *kayit_olustur(hesap *agac, int gelen1, int gelen2, char gelenkarar)
 }
 
 // CACHE KISMI
+
+*/
+//---------------------------------------
 
 /*
 hesap *kayit_olustur(hesap* agac, int gelen1, int gelen2, char gelenkarar){

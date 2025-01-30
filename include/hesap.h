@@ -12,13 +12,8 @@ typedef struct hesap {
 } hesap;
 
 
-void get_inputs();
-int topla(int, int);
-int cikar(int, int );
-int carpma(int, int);
-int bolme(int, int);
-int mod(int, int);
-int neyapcam (char karar, int sayi1, int sayi2);
-hesap *kayit_olustur(hesap*, int, int, char);
+
+
+//hesap *kayit_olustur(hesap*, int, int, char);
 
 #endif
