@@ -3,7 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "hesap.h"
-
+int neyapcam (char, int, int);
 hesap *hesap_new(int sayi1, int sayi2, char karar)
 {
     hesap *new = (hesap *)malloc(sizeof(hesap));
@@ -29,23 +29,26 @@ hesap *hesap_append(hesap *start, int number1, int number2, char decision)
 
 hesap *hesap_delete(hesap *start)
 {
-    hesap *iter = start; // iter 1 gidecek start temizlenecek sonra itere eşit olacak
-    while (iter->next != NULL)
+    hesap *iter = start;
+    while (start != NULL)
     {
-        iter = iter->next;
-        free(start);
-        start = iter;
+        start = start->next;
+        free(iter); // Önce temp'i serbest bırakıyoruz, sonra iter'ı ilerletiyoruz.
+        iter = start;
     }
+    
     //https://stackoverflow.com/questions/58757213/if-two-pointers-point-to-the-same-memory-address-do-you-only-need-to-use-freep
-    free(iter);
     return NULL;
 }
+
+    
+
 
 hesap *hesap_find(hesap *start, int number1, int number2, char decision)
 {
 
     hesap *iter = start;
-    while (iter->next != NULL)
+    while (iter != NULL)
     {
         if (((number1 == iter->sayi1 && number2 == iter->sayi2) || (number1 == iter->sayi2 && number2 == iter->sayi1)) && (decision == iter->karar))
         {
@@ -57,29 +60,34 @@ hesap *hesap_find(hesap *start, int number1, int number2, char decision)
     return NULL;
 }
 
+
+
 hesap *kayit(hesap *coming_node, int number1, int number2, char decision)
 {   
     hesap *find = hesap_find(coming_node, number1, number2, decision);
+    
     if(find != NULL){
         return find;
     }
-
+    
     if (coming_node == NULL){
 
         coming_node = hesap_new(number1, number2, decision); // coming_node'a adres atandı.
         return coming_node;
     }
-
-    else if (coming_node->next == NULL){
-
-        coming_node->next = hesap_new(number1, number2, decision);
-        return coming_node;
-    }
-    else
-
+    else {
         hesap_append(coming_node, number1, number2, decision);
         return coming_node; 
+    }
 }
+
+
+
+
+
+
+
+
 
 // CACHE KISMI
 /*

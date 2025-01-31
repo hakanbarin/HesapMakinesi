@@ -93,7 +93,7 @@ int neyapcam(char karar, int sayi1, int sayi2)
 // İNPUT ALIP FONKSİYONLARA GÖNDEREN KISIM
 void get_inputs()
 {
-    hesap *ilk = NULL;
+    hesap *ilk = (hesap*)malloc(sizeof(hesap));
     int number1, number2, calculation_number;
     char decision;
 
@@ -117,11 +117,15 @@ void get_inputs()
             printf("2. sayiyi yanlis girdin\n");
             continue;
         }
-        if (kayit_olustur(ilk, number1, number2, decision) != NULL)
+        hesap *kontrol =kayit(ilk, number1, number2, decision);
+
+        if (kontrol !=NULL && kontrol == ilk){
 
             calculation_number--;
+        }
+    
     }
-    hesap_delete();
+hesap_delete(ilk);
 }
 
 // İNPUT ALIP FONKSİYONLARA GÖNDEREN KISIM

@@ -9,7 +9,7 @@
 int main(){
 
 
-get_inputs();
+    get_inputs();
 
 
 

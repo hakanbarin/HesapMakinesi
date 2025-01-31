@@ -1,6 +1,6 @@
 
 exe: build/main.o build/hesap.o build/calculation.o
-	gcc build/main.o build/hesap.o -o build/exe -lpthread
+	gcc build/calculation.o build/hesap.o build/main.o  -o build/exe -lpthread
 
 build/%.o: src/%.c
 	mkdir -p build

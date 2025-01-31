@@ -13,6 +13,14 @@ typedef struct hesap {
 
 
 
+hesap *hesap_new(int, int, char);
+hesap *hesap_append(hesap *, int, int, char);
+hesap *hesap_delete(hesap *);
+hesap *hesap_find(hesap *, int, int, char);
+hesap *kayit(hesap *, int, int, char);
+
+
+
 
 //hesap *kayit_olustur(hesap*, int, int, char);
 
