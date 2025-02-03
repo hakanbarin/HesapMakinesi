@@ -3,6 +3,8 @@
         "ctype.h": "c",
         "hesap.h": "c",
         "string.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "signal.h": "c",
+        "calculation.h": "c"
     }
 }

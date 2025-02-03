@@ -3,29 +3,30 @@
 #include <string.h>
 #include <ctype.h>
 #include "hesap.h"
+#include "calculation.h"
 
 // HESAPLAMA KISMI
-int topla(int a, int b)
+static int topla(int a, int b)
 {
     return a + b;
 }
 
-int cikar(int a, int b)
+static int cikar(int a, int b)
 {
     return a - b;
 }
 
-int carpma(int a, int b)
+static int carpma(int a, int b)
 {
     return a * b;
 }
 
-int bolme(int a, int b)
+static int bolme(int a, int b)
 {
     return a / b;
 }
 
-int mod(int a, int b)
+static int mod(int a, int b)
 {
     return a % b;
 }
@@ -36,9 +37,34 @@ int mod(int a, int b)
 
 
 // KARAR VERİLİP İŞLEM YAPILAN KISIM
-int neyapcam(char karar, int sayi1, int sayi2)
+static int (*neyapcam(char karar))(int,int)
 {
+    switch (karar)
+    {
+    case '+':
+        return topla;
+    
+    case '-':
+        return cikar;
+    
+    case '*':
+        return carpma;
+    
+    case '/':
+        return bolme;
+    
+    case '%':
+        return mod;
+    
+    default:
+        return NULL;
+    }
 
+}
+
+
+
+/*
     int a;
     int (*islem[5])(int, int) = {topla, cikar, carpma, bolme, mod};
 
@@ -83,7 +109,7 @@ int neyapcam(char karar, int sayi1, int sayi2)
     else
         printf("yapacaginiz islemi yanlis girdiniz \n");
 }
-
+*/
 // KARAR VERİLİP İŞLEM YAPILAN KISIM
 
 
@@ -93,14 +119,14 @@ int neyapcam(char karar, int sayi1, int sayi2)
 // İNPUT ALIP FONKSİYONLARA GÖNDEREN KISIM
 void get_inputs()
 {
-    hesap *ilk = (hesap*)malloc(sizeof(hesap));
+    hesap *ilk = NULL;
     int number1, number2, calculation_number;
     char decision;
 
     printf("kac islem \n");
     scanf("%d", &calculation_number);
 
-    while (calculation_number != 0)
+    while (calculation_number)
     {
 
         if (scanf("%d", &number1) != 1)
@@ -117,15 +143,65 @@ void get_inputs()
             printf("2. sayiyi yanlis girdin\n");
             continue;
         }
-        hesap *kontrol =kayit(ilk, number1, number2, decision);
+        hesap *kontrol = hesap_find(ilk, number1, number2, neyapcam(decision));
+        if(kontrol == NULL){
+            hesap *yenihesap = hesap_new(number1, number2, neyapcam(decision));
 
-        if (kontrol !=NULL && kontrol == ilk){
+            ilk = hesap_append(ilk, yenihesap);
+
+            printf("%d %c %d %d\n",number1,decision,number2,yenihesap->sonuc);
 
             calculation_number--;
         }
-    
+/*
+        if (kontrol !=NULL && kontrol == ilk){
+            printf("%d",kontrol->sonuc);
+            
+        }
+*/  
     }
 hesap_delete(ilk);
+}
+
+
+void getinputs_forever(hesap** ilk)
+{
+    int number1, number2;
+    char decision;
+
+
+    while (1)
+    {
+
+        if (scanf("%d", &number1) != 1)
+        {
+            printf("1. sayiyi yanlis girdin\n");
+
+            continue; // Döngünün başına dön
+        }
+
+        while(isspace(decision = getchar()));
+
+        if (scanf("%d", &number2) != 1)
+        {
+            printf("2. sayiyi yanlis girdin\n");
+            continue;
+        }
+        hesap *kontrol = hesap_find(*ilk, number1, number2, neyapcam(decision));
+        if(kontrol == NULL){
+            hesap *yenihesap = hesap_new(number1, number2, neyapcam(decision));
+
+            *ilk = hesap_append(*ilk, yenihesap);
+
+            printf("%d %c %d %d\n",number1,decision,number2,yenihesap->sonuc);
+        }
+/*
+        if (kontrol !=NULL && kontrol == ilk){
+            printf("%d",kontrol->sonuc);
+            
+        }
+*/  
+    }
 }
 
 // İNPUT ALIP FONKSİYONLARA GÖNDEREN KISIM

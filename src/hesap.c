@@ -3,54 +3,62 @@
 #include <string.h>
 #include <ctype.h>
 #include "hesap.h"
-int neyapcam (char, int, int);
-hesap *hesap_new(int sayi1, int sayi2, char karar)
+#include "calculation.h"
+
+
+hesap *hesap_new(int sayi1, int sayi2, int (*islem)(int, int))
 {
     hesap *new = (hesap *)malloc(sizeof(hesap));
     new->sayi1 = sayi1;
     new->sayi2 = sayi2;
-    new->karar = karar;
-    new->sonuc = neyapcam(karar, sayi1, sayi2);
+    new->islem = islem;
+    new->sonuc = new->islem(new->sayi1, new->sayi2);
     new->next = NULL;
     return new;
 }
 
-hesap *hesap_append(hesap *start, int number1, int number2, char decision)
+hesap *hesap_append(hesap *start,hesap* tail)
 {
-
-    hesap *iter = start;
-    while (iter->next != NULL)
-    {
-        iter = iter->next;
+    if(start == NULL){
+        return tail;
     }
-    iter->next = hesap_new(number1, number2, decision);
+    start->next = hesap_append(start->next, tail);
     return start;
 }
 
-hesap *hesap_delete(hesap *start)
+void hesap_delete(hesap *start)
 {
-    hesap *iter = start;
-    while (start != NULL)
-    {
-        start = start->next;
-        free(iter); // Önce temp'i serbest bırakıyoruz, sonra iter'ı ilerletiyoruz.
-        iter = start;
+    //recursive
+    if(start != NULL){
+        hesap_delete(start->next);
+        printf("duzgun sekilde temizlendi\n");
+        free(start);
     }
-    
-    //https://stackoverflow.com/questions/58757213/if-two-pointers-point-to-the-same-memory-address-do-you-only-need-to-use-freep
-    return NULL;
+    /*   İTERATİF YÖNTEM
+    hesap *iter;
+    while(start != NULL){
+        iter = start;
+        start = start->next;
+        free(iter);
+    }
+    */
 }
 
-    
-
-
-hesap *hesap_find(hesap *start, int number1, int number2, char decision)
+hesap *hesap_find(hesap *start, int number1, int number2, int (*islem)(int, int))
 {
-
+    if(start == NULL){
+        return NULL;
+    }
+    if(((number1 == start->sayi1 && number2 == start->sayi2) || (number1 == start->sayi2 && number2 == start->sayi1)) && (islem == start->islem)) {
+        printf("bu islemi daha önce yaptin: SONUC %d\n", start->sonuc);
+        return start;
+    }
+    return hesap_find(start->next, number1, number2, islem);
+/*
     hesap *iter = start;
     while (iter != NULL)
     {
-        if (((number1 == iter->sayi1 && number2 == iter->sayi2) || (number1 == iter->sayi2 && number2 == iter->sayi1)) && (decision == iter->karar))
+        if (((number1 == iter->sayi1 && number2 == iter->sayi2) || (number1 == iter->sayi2 && number2 == iter->sayi1)) && (decisionf == iter->islem))
         {
             printf("bu islemi daha önce yaptin: SONUC %d\n", iter->sonuc);
             return iter;
@@ -58,35 +66,36 @@ hesap *hesap_find(hesap *start, int number1, int number2, char decision)
         iter = iter->next;
     }
     return NULL;
+*/
 }
 
 
-
+/*
 hesap *kayit(hesap *coming_node, int number1, int number2, char decision)
 {   
-    hesap *find = hesap_find(coming_node, number1, number2, decision);
+    hesap *find = hesap_find(coming_node, number1, number2, neyapcam(decision));
     
     if(find != NULL){
         return find;
     }
-    
+    return hesap_append(coming_node, number1, number2, neyapcam(decision));
     if (coming_node == NULL){
 
         coming_node = hesap_new(number1, number2, decision); // coming_node'a adres atandı.
         return coming_node;
     }
     else {
-        hesap_append(coming_node, number1, number2, decision);
-        return coming_node; 
+        return hesap_append(coming_node, number1, number2, decision);
     }
 }
+*/
 
 
 
 
 
 
-
+    //https://stackoverflow.com/questions/58757213/if-two-pointers-point-to-the-same-memory-address-do-you-only-need-to-use-freep
 
 
 // CACHE KISMI
@@ -97,7 +106,7 @@ hesap *kayit_olustur(hesap *agac, int gelen1, int gelen2, char gelenkarar)
     hesap *iter = agac;
     while (iter != NULL)
     {
-        if (((gelen1 == iter->sayi1 && gelen2 == iter->sayi2) || (gelen1 == iter->sayi2 && gelen2 == iter->sayi1)) && (gelenkarar == iter->karar))
+        if (((gelen1 == iter->sayi1 && gelen2 == iter->sayi2) || (gelen1 == iter->sayi2 && gelen2 == iter->sayi1)) && (gelenkarar == iter->islem))
         {
             printf("bu islemi daha önce yaptin: SONUC %d\n", iter->sonuc);
             return NULL;
@@ -111,7 +120,7 @@ hesap *kayit_olustur(hesap *agac, int gelen1, int gelen2, char gelenkarar)
         yeni->next = NULL;
         yeni->sayi1 = gelen1;
         yeni->sayi2 = gelen2;
-        yeni->karar = gelenkarar;
+        yeni->islem = gelenkarar;
         yeni->sonuc = neyapcam(gelenkarar, gelen1, gelen2);
         return yeni;
     }
@@ -152,7 +161,7 @@ hesap *kayit_olustur(hesap* agac, int gelen1, int gelen2, char gelenkarar){
         hesap * yeni = (hesap *)malloc(sizeof(hesap));
         yeni->sayi1 = gelen1;
         yeni->sayi2 = gelen2;
-        yeni->karar = gelenkarar;
+        yeni->islem = gelenkarar;
         yeni->sonuc = neyapcam(gelenkarar, gelen1, gelen2);
         printf("sonuc %d\n", yeni->sonuc);
         yeni->next = NULL;
